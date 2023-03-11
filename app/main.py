@@ -1,16 +1,30 @@
+"""Application entry point."""
+
 from flask import Flask
 
-app = Flask(__name__,
-            template_folder='/opt/app/templates',
-            static_folder='/opt/app/static')
+def init_app():
+    """Construct core Flask application with embedded Dash app."""
+    app = Flask(__name__, instance_relative_config=False,
+                template_folder='/opt/app/templates',
+                static_folder='/opt/app/static'
+                )
 
-@app.route('/')
-def home(): 
-    return 'Web App with Python Flask!'
+    with app.app_context():
+        # Import parts of our core Flask app
+        import routes
+        #from .assets import compile_static_assets
 
-@app.route('/about')
-def about():
-    return 'About Python Flask!'
+        # Import Dash application
+        from dashboard import init_dashboard
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int("8080"), debug=False) 
+        app = init_dashboard(app)
+
+        # Compile static assets
+        #compile_static_assets(assets)
+
+        return app
+
+app = init_app()
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=False, port=int("8080"))

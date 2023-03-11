@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y python3-pip && \
-    pip3 install flask gunicorn && \
+    pip3 install flask gunicorn dash pandas && \
     rm -rf /var/lib/apt/lists/*
 
 COPY app /opt/app
