@@ -1,3 +1,6 @@
+## Status
+Done and can be tested
+
 ## Routes
 
 - / - home page
